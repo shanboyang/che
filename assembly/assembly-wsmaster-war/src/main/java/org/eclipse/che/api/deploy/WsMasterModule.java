@@ -21,6 +21,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.MapBinder;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+import com.google.inject.util.Modules;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -281,7 +282,10 @@ public class WsMasterModule extends AbstractModule {
       install(new LocalDockerModule());
       install(new DockerInfraModule());
     }
-    install(new CheJsonRpcWebSocketConfigurationModule());
+    install(
+        Modules.override(new CheJsonRpcWebSocketConfigurationModule())
+            .with(new MetricsOverrideBinding()));
+
     bind(org.eclipse.che.api.user.server.AppStatesPreferenceCleaner.class);
     MapBinder.newMapBinder(binder(), String.class, ChePluginsApplier.class);
 

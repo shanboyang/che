@@ -15,8 +15,8 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.inject.Inject;
@@ -97,7 +97,8 @@ public class CheMajorWebSocketEndpoint extends BasicWebSocketEndpoint {
               .build();
 
       executor =
-          new ThreadPoolExecutor(0, maxPoolSize, 60L, SECONDS, new SynchronousQueue<>(), factory);
+          new ThreadPoolExecutor(
+              0, maxPoolSize, 60L, SECONDS, new ArrayBlockingQueue<Runnable>(10000), factory);
       executor.setRejectedExecutionHandler(
           (r, __) -> LOG.error("Message {} rejected for execution", r));
     }
