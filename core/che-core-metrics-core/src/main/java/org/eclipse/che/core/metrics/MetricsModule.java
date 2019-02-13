@@ -49,39 +49,5 @@ public class MetricsModule extends AbstractModule {
     meterMultibinder.addBinding().to(UptimeMetrics.class);
     meterMultibinder.addBinding().to(FileStoresMeterBinder.class);
     meterMultibinder.addBinding().to(ApiResponseCounter.class);
-
-    //    bindListener(
-    //        Matchers.any(), new MyProvisionListener(getProvider(PrometheusMeterRegistry.class)));
   }
-
-  //  private static class MyProvisionListener implements ProvisionListener {
-  //
-  //    private final Logger LOG = LoggerFactory.getLogger(ProvisionListener.class);
-  //    Provider<PrometheusMeterRegistry> meterRegistryProvider;
-  //
-  //    public MyProvisionListener(Provider<PrometheusMeterRegistry> meterRegistryProvider) {
-  //      this.meterRegistryProvider = meterRegistryProvider;
-  //    }
-  //
-  //    @Override
-  //    public <T> void onProvision(ProvisionInvocation<T> provision) {
-  //      T obj = provision.provision();
-  //      //
-  //      if (obj != null && ExecutorService.class.isAssignableFrom(obj.getClass())) {
-  //        Key<T> key = provision.getBinding().getKey();
-  //        Annotation an = key.getAnnotation();
-  //        if (an != null) {
-  //          String name = null;
-  //          if (Named.class.isAssignableFrom(an.annotationType())) {
-  //            name = ((Named) an).value();
-  //          } else if (javax.inject.Named.class.isAssignableFrom(an.annotationType())) {
-  //            name = ((javax.inject.Named) an).value();
-  //          }
-  //          LOG.info("Binding metrics for {} with name {} ", obj, name);
-  //          ExecutorServiceMetrics.monitor(
-  //              meterRegistryProvider.get(), (ExecutorService) obj, name, Tags.empty());
-  //        }
-  //      }
-  //    }
-  //  }
 }
