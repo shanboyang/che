@@ -11,8 +11,6 @@
  */
 package org.eclipse.che;
 
-import static org.testng.Assert.*;
-
 import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,7 +19,7 @@ import com.google.inject.name.Names;
 import java.util.concurrent.ExecutorService;
 import org.eclipse.che.api.deploy.CheJsonRpcWebSocketConfigurationModule;
 import org.eclipse.che.api.deploy.CheMajorWebSocketEndpoint;
-import org.eclipse.che.api.deploy.MetricsOverrideBinding3;
+import org.eclipse.che.api.deploy.MetricsOverrideBinding;
 import org.eclipse.che.core.metrics.MetricsModule;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -35,7 +33,7 @@ public class WsMasterModuleTest {
     injector =
         Guice.createInjector(
             new CheJsonRpcWebSocketConfigurationModule(),
-            new MetricsOverrideBinding3(),
+            new MetricsOverrideBinding(),
             new MetricsModule(),
             new Module() {
               @Override

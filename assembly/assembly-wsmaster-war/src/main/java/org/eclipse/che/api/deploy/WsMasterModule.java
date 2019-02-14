@@ -282,9 +282,7 @@ public class WsMasterModule extends AbstractModule {
       install(new DockerInfraModule());
     }
     install(new CheJsonRpcWebSocketConfigurationModule());
-    //    install(
-    //        Modules.override(new CheJsonRpcWebSocketConfigurationModule())
-    //            .with(new MetricsOverrideBinding()));
+
 
     bind(org.eclipse.che.api.user.server.AppStatesPreferenceCleaner.class);
     MapBinder.newMapBinder(binder(), String.class, ChePluginsApplier.class);
@@ -295,8 +293,7 @@ public class WsMasterModule extends AbstractModule {
     if (Boolean.valueOf(System.getenv("CHE_METRICS_ENABLED"))) {
       install(new org.eclipse.che.core.metrics.MetricsModule());
       install(new WsMasterMetricsModule());
-      // install(new MetricsOverrideBinding2());
-      install(new MetricsOverrideBinding3());
+      install(new MetricsOverrideBinding());
     }
   }
 
