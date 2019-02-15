@@ -89,10 +89,12 @@ public class ExecutorServiceMetrics implements MeterBinder {
 
     @Override
     public String toString() {
-      return "RejectedExecutionHandlerWrapper{" +
-              "handler=" + handler +
-              ", counter=" + counter +
-              '}';
+      return "RejectedExecutionHandlerWrapper{"
+          + "handler="
+          + handler
+          + ", counter="
+          + counter
+          + '}';
     }
 
     @Override
