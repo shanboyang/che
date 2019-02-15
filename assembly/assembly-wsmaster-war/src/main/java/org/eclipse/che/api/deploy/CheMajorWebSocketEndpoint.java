@@ -15,8 +15,9 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import javax.inject.Inject;
@@ -88,7 +89,9 @@ public class CheMajorWebSocketEndpoint extends BasicWebSocketEndpoint {
 
     @Inject
     public CheMajorWebSocketEndpointExecutorServiceProvider(
-        @Named("che.core.jsonrpc.processor_max_pool_size") int maxPoolSize) {
+        @Named("che.core.jsonrpc.processor_core_pool_size") int corePoolSize,
+        @Named("che.core.jsonrpc.processor_max_pool_size") int maxPoolSize,
+        @Named("che.core.jsonrpc.processor_queue_capacity") int queueCapacity) {
       ThreadFactory factory =
           new ThreadFactoryBuilder()
               .setUncaughtExceptionHandler(LoggingUncaughtExceptionHandler.getInstance())
@@ -98,9 +101,17 @@ public class CheMajorWebSocketEndpoint extends BasicWebSocketEndpoint {
 
       executor =
           new ThreadPoolExecutor(
-              0, maxPoolSize, 60L, SECONDS, new ArrayBlockingQueue<Runnable>(10000), factory);
+              corePoolSize,
+              maxPoolSize,
+              60L,
+              SECONDS,
+              queueCapacity > 0
+                  ? new LinkedBlockingQueue<>(queueCapacity)
+                  : new SynchronousQueue<>(),
+              factory);
       executor.setRejectedExecutionHandler(
           (r, __) -> LOG.error("Message {} rejected for execution", r));
+      executor.prestartCoreThread();
     }
 
     @Override

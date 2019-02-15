@@ -283,7 +283,6 @@ public class WsMasterModule extends AbstractModule {
     }
     install(new CheJsonRpcWebSocketConfigurationModule());
 
-
     bind(org.eclipse.che.api.user.server.AppStatesPreferenceCleaner.class);
     MapBinder.newMapBinder(binder(), String.class, ChePluginsApplier.class);
 

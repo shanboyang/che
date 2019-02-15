@@ -14,7 +14,6 @@ package org.eclipse.che.api.deploy;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import io.micrometer.core.instrument.Tags;
-import io.micrometer.core.instrument.binder.jvm.ExecutorServiceMetrics;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import java.util.concurrent.ExecutorService;
 import javax.inject.Inject;
@@ -22,6 +21,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 import org.eclipse.che.api.deploy.CheMajorWebSocketEndpoint.CheMajorWebSocketEndpointExecutorServiceProvider;
 import org.eclipse.che.api.deploy.CheMinorWebSocketEndpoint.CheMinorWebSocketEndpointExecutorServiceProvider;
+import org.eclipse.che.core.metrics.ExecutorServiceMetrics;
 
 public class MetricsOverrideBinding implements Module {
   @Override
@@ -45,9 +45,11 @@ public class MetricsOverrideBinding implements Module {
 
     @Inject
     public MeteredCheMajorWebSocketEndpointExecutorServiceProvider(
+        @Named("che.core.jsonrpc.processor_core_pool_size") int corePoolSize,
         @Named("che.core.jsonrpc.processor_max_pool_size") int maxPoolSize,
+        @Named("che.core.jsonrpc.processor_queue_capacity") int queueCapacity,
         PrometheusMeterRegistry meterRegistry) {
-      super(maxPoolSize);
+      super(corePoolSize, maxPoolSize, queueCapacity);
       this.meterRegistry = meterRegistry;
     }
 
@@ -71,15 +73,20 @@ public class MetricsOverrideBinding implements Module {
 
     @Inject
     public MeteredCheMinorWebSocketEndpointExecutorServiceProvider(
-        @Named("che.core.jsonrpc.processor_max_pool_size") int maxPoolSize,
+        @Named("che.core.jsonrpc.minor_processor_core_pool_size") int corePoolSize,
+        @Named("che.core.jsonrpc.minor_processor_max_pool_size") int maxPoolSize,
+        @Named("che.core.jsonrpc.minor_processor_queue_capacity") int queueCapacity,
         PrometheusMeterRegistry meterRegistry) {
-      super(maxPoolSize);
+      super(corePoolSize, maxPoolSize, queueCapacity);
       this.meterRegistry = meterRegistry;
     }
 
     @Override
     public ExecutorService get() {
       if (executorService == null) {
+
+        super.get();
+
         executorService =
             ExecutorServiceMetrics.monitor(
                 meterRegistry, super.get(), "che.core.jsonrpc.minor_executor", Tags.empty());

@@ -42,6 +42,27 @@ public class WsMasterModuleTest {
                     .bindConstant()
                     .annotatedWith(Names.named("che.core.jsonrpc.processor_max_pool_size"))
                     .to(100);
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.core.jsonrpc.processor_core_pool_size"))
+                    .to(4);
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.core.jsonrpc.minor_processor_max_pool_size"))
+                    .to(100);
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.core.jsonrpc.minor_processor_core_pool_size"))
+                    .to(3);
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.core.jsonrpc.processor_queue_capacity"))
+                    .to(100);
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.core.jsonrpc.minor_processor_queue_capacity"))
+                    .to(100);
+
                 binder.bindConstant().annotatedWith(Names.named("che.metrics.port")).to(100);
               }
             });
