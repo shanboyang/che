@@ -77,7 +77,7 @@ public class CheMinorWebSocketEndpoint extends BasicWebSocketEndpoint {
     }
 
     @Override
-    public ExecutorService getExecutionService() {
+    public ExecutorService getExecutorService() {
       return executor;
     }
   }

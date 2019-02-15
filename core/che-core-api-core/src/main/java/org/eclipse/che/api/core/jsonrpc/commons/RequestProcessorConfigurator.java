@@ -29,6 +29,6 @@ public interface RequestProcessorConfigurator {
 
     String getEndpointId();
 
-    ExecutorService getExecutionService();
+    ExecutorService getExecutorService();
   }
 }

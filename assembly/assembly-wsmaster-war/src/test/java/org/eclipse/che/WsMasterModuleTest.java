@@ -73,6 +73,6 @@ public class WsMasterModuleTest {
     CheMajorWebSocketEndpoint.CheMajorWebSocketEndpointConfiguration configuration =
         injector.getInstance(
             CheMajorWebSocketEndpoint.CheMajorWebSocketEndpointConfiguration.class);
-    ExecutorService exc = configuration.getExecutionService();
+    ExecutorService exc = configuration.getExecutorService();
   }
 }
